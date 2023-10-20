@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "LOC_CountryAddEdit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model AddressBook.Areas.Country.Models.LOC_CountryModel;
+<div class="row">
+    <div class="col-md-12">
+        <h3>@TempData["CountryInsertMsg"]</h3>
+        <form method="post" asp-controller="LOC_Country" asp-action="Save">
+            @Html.HiddenFor(x=>x.CountryID)
+            <div class="form-group">
+                <label>Country Name</label>
+                <input type="text" class="form-control" asp-for="CountryName" placeholder="Enter Country Name" />
+            </div>
+            <div class="form-group">
+                <label>Country Code</label>
+                <input type="text" class="form-control" asp-for="CountryCode" placeholder="Enter Country Code" />
+            </div>
+            <div class="form-group">
+            <label>Country ID</label>
+                <input type="text" class="form-control" asp-for="CountryID" placeholder="Enter Country ID" />
+            </div>
+            <hr />
+            <button type="submit" class="btn btn-outline-success" >Submit</button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,74 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using System.Data
+@model Country_State_City_Final.Areas.Student.Models.Studentmodel
+
+
+<form method="post" asp-controller="Student" asp-action="StudentSave">
+    @Html.HiddenFor(x=>x.StudentId)
+    <div class="mb-3">
+        <label class="form-label">Student Name</label>
+        <input type="text" class="form-control" asp-for="StudentName">
+        <span class="form-text" asp-validation-for="StudentName"> </span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">MobileNoStudent</label>
+        <input type="text" class="form-control" asp-for="MobileNoStudent" />
+        <span asp-validation-for="MobileNoStudent" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="text" class="form-control" asp-for="Email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">MobileNoFather</label>
+        <input type="text" class="form-control" asp-for="MobileNoFather" />
+        <span asp-validation-for="MobileNoFather" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Address</label>
+        <input type="text" class="form-control"  asp-for="Address" />
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">BirthDate</label>
+        <input type="date" id="datepicker" class="form-control" asp-for="BirthDate" />
+        <span asp-validation-for="BirthDate" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">City Name</label>
+        <select id="inputState" class="form-control" asp-for="CityID"
+                asp-items="@(new SelectList(ViewBag.citylist,"CityId","CityName"))">
+
+            <option disabled selected>Select City</option>
+        </select>
+
+        <span asp-validation-for="CityID" class="text-danger"></span>
+
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Branch Name</label>
+        <select id="inputState" class="form-control" asp-for="BranchID"
+                asp-items="@(new SelectList(ViewBag.branchlist,"BranchId","BranchName"))">
+
+            <option disabled selected>Select Branch</option>
+        </select>
+
+        <span asp-validation-for="BranchID" class="text-danger"></span>
+
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+

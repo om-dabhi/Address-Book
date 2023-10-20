@@ -1,0 +1,129 @@
+﻿@{
+    ViewData["Title"] = "LOC_CityAddEdit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model AddressBook.Areas.City.Models.LOC_CityModel;
+
+<form method="post" asp-action="Save">
+    @Html.HiddenFor(x=>x.CityID)
+    <div class="mb-3">
+        <label class="form-label">City Name</label>
+        <input type="text" class="form-control" asp-for="CityName">
+        <span class="form-text" asp-validation-for="CityName"> </span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">State Name</label>
+        <select id="StateID" class="form-control" asp-for="StateID"
+                asp-items="@(new SelectList(ViewBag.StateList,"StateID","StateName"))">
+            <option disabled selected>Select State</option>
+        </select>
+
+        <span asp-validation-for="StateID" class="text-danger"></span>
+
+    </div>
+
+
+    <div class="mb-3">
+        <label class="form-label">Country Name</label>
+        <select id="CountryID" class="form-control" asp-for="CountryID"
+                asp-items="@(new SelectList(ViewBag.countrylist,"CountryID","CountryName"))" onchange="fnOnStateChange();">
+
+            <option disabled selected>Select Country</option>
+        </select>
+
+        <span asp-validation-for="CountryID" class="text-danger"></span>
+
+    </div>
+
+
+    <div class="mb-3">
+        <label class="form-label">CityCode</label>
+        <input type="text" class="form-control" asp-for="CityCode">
+        <span class="form-text" asp-validation-for="CityCode"> </span>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<script>
+    function fnOnStateChange() {
+
+        var CountryID = $("#CountryID").val();
+
+        if (CountryID !== "") {
+            $("#StateID").empty();
+            $("#StateID").append($("<option></option>").val("").html("Select States"));
+            $.ajax(
+                {
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "@Url.Action("DropDownByCountry","City")" + "?&CountryId=" + CountryID,
+
+                    data: {},
+                    datatType: "json",
+                    success: function (Result) {
+                        $.each(Result,
+                            function (key, value) {
+                                $("#StateID").append($("<option></option>").val(value.stateId).html(value.stateName));
+                            }
+                        );
+                    },
+
+                    error: function (r) {
+                        alert("Error While Loading Dropdown!");
+                    }
+                }
+            );
+        }
+        else {
+            $("StateID").empty();
+            $("StateID").append($("<option></option>").val("").html("Select State"));
+        }
+    }
+</script>
+<script>
+    function AddCity(p1, p2) {
+        $(document).ready(function () {
+            var jsonData = JSON.stringify(@Model);
+            $.ajax({
+                url: "@Url.Action("CitySave", "City")",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: { cityModelJson: jsonData }, // Pass the JSON string as a parameter
+                success: function (result) {
+                    // Show success message
+                    alert("added");
+
+                },
+                error: function () {
+                    // Show error message
+                    confirmError();
+                }
+            });
+        }
+                        }
+
+    function confirmAdd() {
+        Swal.fire({
+            title: "Data Added",
+            text: "The data has been added successfully.",
+            icon: "success"
+        }).then(() => {
+            // Redirect or perform any other action after successful addition
+            window.location.href = "@Url.Action("CityList", "City")";
+        });
+    }
+
+    function confirmError() {
+        Swal.fire({
+            title: "Error",
+            text: "An error occurred while adding the data.",
+            icon: "error"
+        });
+    }
+</script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }

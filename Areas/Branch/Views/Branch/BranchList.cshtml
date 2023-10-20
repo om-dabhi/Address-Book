@@ -1,0 +1,49 @@
+﻿@model DataTable
+@using System.Data
+
+<div class="pagetitle">
+    <h1>Country List</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item active"><a asp-controller="Branch" asp-action="BranchList">Branch List</a></li>
+        </ol>
+    </nav>
+</div>
+<a type="button" class="btn btn-success mt-1" asp-area="Branch" asp-controller="Branch" asp-action="BranchAddEdit">Add New Branch</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Branch id</th>
+            <th scope="col">Branch Name</th>
+            <th scope="col">Branch Code</th>
+            <th scope="col">Action</th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @if (Model.Rows.Count <= 0)
+        {
+            <tr>
+                <td class="col text-danger text-center">Norecord</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (DataRow dataRow in Model.Rows)
+            {
+                <tr>
+                    <td>@dataRow["BranchId"]</td>
+                    <td>@dataRow["BranchName"]</td>
+                    <td>@dataRow["BranchCode"]</td>
+                    <td>
+                        <a type="button" class="btn btn-danger" asp-area="Branch" asp-controller="Branch" asp-action="BranchDelete" asp-route-BranchId="@Convert.ToInt32(dataRow["BranchId"])">Delete</a>
+                        <a type="button" class="btn btn-success" asp-area="Branch" asp-controller="Branch" asp-action="BranchAddEdit" asp-route-BranchId="@Convert.ToInt32(dataRow["BranchId"])">Edit</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
